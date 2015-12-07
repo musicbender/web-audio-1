@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    console.log('DEBUG: Running JS');
+
     var context = new AudioContext(),
         getSound = new XMLHttpRequest(),
         snare;
