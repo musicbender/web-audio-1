@@ -1,47 +1,42 @@
 $(document).ready(function(){
-    
-    var xhr = new XMLHttpRequest();
+    console.log('DEBUG: Running JS');
+    var context = new AudioContext(),
+        getSound = new XMLHttpRequest(),
+        snare;
+
+    getSound.open("GET", "snare.mp3", true);
+    getSound.responseType = 'arraybuffer';
+
+    getSound.onload = function() {
+        context.decodeAudioData(getSound.response, function(buffer) {
+        snare = buffer;
+        });
+    }
+
+    getSound.send();
     
     $('#sub-btn').click(function() {
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                $('#scores').html(xhr.responseText);
-            }
-            else {
-                $('#scores').html('<p>Waiting for Server Response...</p>');
-            }
-        }
-
-        xhr.open("GET", "test.txt", true);
-        xhr.send();
-    });
-    
-    
-    
-    
-    
-    //practicing factory functions
-    function makeGoblin (name, element, weapon) {
-        var goblin = {};
-        goblin.name = name;
-        goblin.element = element;
-        goblin.weapon = weapon;
-        goblin.battlecry = function () {
-            $('.goblin').append("<p>I'm " + name + ", and I will hit you with my " + weapon);
-        }
+        var playSound = context.createBufferSource();
+        playSound.buffer = snare;
+        playSound.connect(context.destination);
+        playSound.start(0);
         
-        return goblin;
-    }
-    
-    var goblin1 = makeGoblin('Shogli', 'fire', 'fork');
-    var goblin2 = makeGoblin('Flanflan', 'water', 'wad of seaweed');
-    var goblin3 = makeGoblin('Reet', 'lightning', 'mop');
-    
-    
-    
-    var goblinGroup = [goblin1, goblin2, goblin3];
-    
-    for (var i = 0; i < 3; i++){
-        goblinGroup[i].battlecry();
-    }
+    });
 });
+
+
+//Checking on the server stuff
+
+    /*getSound.onreadystatechange = function () {
+        if (getSound.readyState == 4 && getSound.status == 200) {
+            $('#scores').html(getSound.responseText);
+        }
+        else {
+            $('#scores').html('<p>Waiting for Server Response...' + getSound.status + getSound.readyState + '</p>');
+        }
+    }*/
+    
+    
+    
+    
+    
