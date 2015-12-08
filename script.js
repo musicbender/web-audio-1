@@ -20,13 +20,11 @@ $(document).ready(function(){
         playSound.buffer = snare;
         playSound.connect(context.destination);
         playSound.start(0);
-        
     });
 });
 
 
 //Checking on the server stuff
-
     /*getSound.onreadystatechange = function () {
         if (getSound.readyState == 4 && getSound.status == 200) {
             $('#scores').html(getSound.responseText);
